@@ -16,9 +16,9 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class RevenueController {
-    static ObjectMapper mapper = new ObjectMapper();
+
     static Scanner scanner = new Scanner(System.in);
-    static Model model = new Model();
+
 
     public static void execute() throws IOException, ParseException {
 
@@ -41,11 +41,7 @@ public class RevenueController {
     }
 
     private static void showTotalRevenue() {
-        try {
-            model = mapper.readValue(new File("src\\main\\java\\model\\model.json"), Model.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Model model=ReadWriteToModel.readModel();
         double sum = 0;
         for (Rental rental : model.rentals) {
             sum += rental.getTotalPrice();
@@ -56,11 +52,7 @@ public class RevenueController {
     }
 
     private static void showDailyRevenue() throws ParseException {
-        try {
-            model = mapper.readValue(new File("src\\main\\java\\model\\model.json"), Model.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       Model model=ReadWriteToModel.readModel();
         String strDateFormat = "dd-MM-yyyy"; //Date format is Specified
         SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
         System.out.println("Enter rental date in the form dd-MM-YYYY");
@@ -79,14 +71,3 @@ public class RevenueController {
 
 }
 }
-
-
-
-
-
-
-
-
-
-
-
