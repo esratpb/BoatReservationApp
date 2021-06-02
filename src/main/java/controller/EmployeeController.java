@@ -14,9 +14,8 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class EmployeeController {
-    static ObjectMapper mapper = new ObjectMapper();
+
     static Scanner scanner = new Scanner(System.in);
-    static Model model = new Model();
 
     public static void execute() throws IOException {
 
@@ -45,6 +44,7 @@ public class EmployeeController {
     }
 
     private static void deleteUser() throws IOException {
+        Model model = ReadWriteToModel.readModel();
         System.out.println("Please enter the Id of the user you want to delete:");
         int userId = scanner.nextInt();
 
@@ -57,11 +57,12 @@ public class EmployeeController {
 
         }
         // Java object to JSON file
-        mapper.writeValue(new File("src/main/java/model/model.json"), model);
+        ReadWriteToModel.writeModel(model);
 
     }
 
     private static void updateUser() {
+        Model model = ReadWriteToModel.readModel();
         System.out.println("Please enter the id of the User ");
         int userId = scanner.nextInt();
         scanner.nextLine();
@@ -74,14 +75,11 @@ public class EmployeeController {
                 break;
             }
         }
-        try {
-            mapper.writeValue(new File("src/main/java/model/model.json"), model);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       ReadWriteToModel.writeModel(model);
     }
 
     private static void addUser() {
+        Model model=ReadWriteToModel.readModel();
         System.out.println("Please enter user name:");
         String keyInput_User = scanner.nextLine();
         System.out.println("Please enter new password:");
@@ -90,28 +88,12 @@ public class EmployeeController {
         System.out.println("A new user is added successfully.");
 
 
-        try {
-            model = mapper.readValue(new File("src/main/java/model/model.json"), Model.class);
-            model.employees.add(employee);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            // Java object to JSON file
-            mapper.writeValue(new File("src/main/java/model/model.json"), model);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ReadWriteToModel.writeModel(model);
 
     }
 
     private static void showUsers() {
-        try {
-            model = mapper.readValue(new File("src/main/java/model/model.json"), Model.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Model model =ReadWriteToModel.readModel();
         for (Employee employee : model.employees) {
             System.out.println(employee);
         }
