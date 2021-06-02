@@ -10,9 +10,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class BoatController {
-    static Model model = new Model();
     static Scanner scanner = new Scanner(System.in);
-    static ObjectMapper mapper = new ObjectMapper();
 
     public static void execute() {
 
@@ -41,14 +39,11 @@ public class BoatController {
     }
 
     public static void listBoats(){
-        try {
-            model = mapper.readValue(new File("src\\main\\java\\model\\model.json"), Model.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        Model model=ReadWriteToModel.readModel();
         System.out.println("BOAT ID \t BOAT TYPE \t SEATS \t\t PRICE PER HOUR \t CHARGING TIME");
         for (Boat boatIn : model.boats) {
-//            System.out.println(boatIn);
+
             System.out.println(boatIn.getBoatId() + "\t\t\t TYPE:" + boatIn.getBoatType() + "\t\t SEATS: " + boatIn.getSeats() + "\t PRICE:" + boatIn.getMinimumPrice() + "\t\t CHARGING TIME:" + boatIn.getChargingTime());
         }
     }
@@ -120,24 +115,15 @@ public class BoatController {
             }
         }
 
+        Model model=ReadWriteToModel.readModel();
 
         Boat newBoat = new Boat(model.nextBoatId(), boatType, boatSeats, keyInput_boatPrice, chargingTime);
         System.out.println("A new Boat is added successfully.");
 
 
-        try {
-            model = mapper.readValue(new File("src/main/java/model/model.json"), Model.class);
             model.boats.add(newBoat);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            // Java object to JSON file
-            mapper.writeValue(new File("src/main/java/model/model.json"), model);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ReadWriteToModel.writeModel(model);
         return newBoat;
     }
 
@@ -147,6 +133,7 @@ public class BoatController {
         int boatId = scanner.nextInt();
         System.out.println("Please enter new price for the boat");
         double minimumPrice = scanner.nextDouble();
+        Model model=ReadWriteToModel.readModel();
         for (Boat boatIn : model.boats){
             if(boatIn.getBoatId()==boatId){
                 boatIn.setMinimumPrice(minimumPrice);
@@ -154,17 +141,15 @@ public class BoatController {
                 break;
             }
         }
-        try {
-            mapper.writeValue(new File("src/main/java/model/model.json"), model);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        ReadWriteToModel.writeModel(model);
     }
 
     public static void deleteBoat(){
 
         System.out.println("Please enter the Id of the customer you want to delete:");
         int boatId = scanner.nextInt();
+        Model model=ReadWriteToModel.readModel();
 
         for (Boat boatIn : model.boats){
             if(boatId == boatIn.getBoatId()){
@@ -175,11 +160,7 @@ public class BoatController {
 
         }
         // Java object to JSON file
-        try {
-            mapper.writeValue(new File("src/main/java/model/model.json"), model);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ReadWriteToModel.writeModel(model);
     }
 
 }
