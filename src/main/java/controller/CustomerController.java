@@ -34,7 +34,7 @@ public class CustomerController {
                     break;
                 case 4:
                     try {
-                        deleteCustomer(model,  mapper, scanner);
+                        deleteCustomer();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -48,15 +48,15 @@ public class CustomerController {
     }
 
     private static void listCustomers() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        model = mapper.readValue(new File("C:\\Users\\zgoksu\\IdeaProjects\\BoatReservationApp\\src\\main\\java\\model\\model.json"), Model.class);
+        Model model=ReadWriteToModel.readModel();
         for (Customer customerIn : model.customers) {
             System.out.println(customerIn);
         }
     }
 
     private static void addCustomer(){
-        ObjectMapper mapper = new ObjectMapper();
+        Model model=ReadWriteToModel.readModel();
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter customer name:");
         String keyInput_customer = scanner.nextLine();
@@ -71,23 +71,13 @@ public class CustomerController {
         System.out.println("A new customer is added successfully.");
 
 
-        try {
-            model = mapper.readValue(new File("C:\\Users\\zgoksu\\IdeaProjects\\BoatReservationApp\\src\\main\\java\\model\\model.json"), Model.class);
-            model.customers.add(customer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            // Java object to JSON file
-            mapper.writeValue(new File("C:\\Users\\zgoksu\\IdeaProjects\\BoatReservationApp\\src\\main\\java\\model\\model.json"), model);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       ReadWriteToModel.writeModel(model);
 
     }
 
-    private static void deleteCustomer(Model model, ObjectMapper mapper,Scanner scanner) throws IOException {
+    private static void deleteCustomer() throws IOException {
+        Model model= ReadWriteToModel.readModel();
         System.out.println("Please enter the Id of the customer you want to delete:");
         int customerId = scanner.nextInt();
 
@@ -100,7 +90,7 @@ public class CustomerController {
 
         }
         // Java object to JSON file
-        mapper.writeValue(new File("C:\\Users\\zgoksu\\IdeaProjects\\BoatReservationApp\\src\\main\\java\\model\\model.json"), model);
-    }
+   ReadWriteToModel.writeModel(model);
 
-}
+}}
+
