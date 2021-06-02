@@ -15,28 +15,21 @@ public class MainController {
     ObjectMapper mapper = new ObjectMapper();
 
     public void execute() throws IOException, ParseException {
-        // Read the model
-        model = Model.readModel();
-        try {
 
-            model = mapper.readValue(new File("src/main/java/model/model.json"), Model.class);
 
-            Scanner scanner = new Scanner(System.in);
-            boolean isAuthenticated = false;
-            System.out.println("Welcome to Boat Reservation Application");
-            while (!isAuthenticated) {
-                System.out.print("Please Enter your username: ");
-                String userName = scanner.nextLine();
-                System.out.print("Enter password: ");
-                String password = scanner.nextLine();
-                if (authenticate(userName, password, model)) {
-                    isAuthenticated = true;
-                } else {
-                    System.out.println("Incorrect username or password. Please enter your credentials again.");
-                }
+        Scanner scanner = new Scanner(System.in);
+        boolean isAuthenticated = false;
+        System.out.println("Welcome to Boat Reservation Application");
+        while (!isAuthenticated) {
+            System.out.print("Please Enter your username: ");
+            String userName = scanner.nextLine();
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+            if (authenticate(userName, password)) {
+                isAuthenticated = true;
+            } else {
+                System.out.println("Incorrect username or password. Please enter your credentials again.");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         outer:
         while (true) {
@@ -70,9 +63,10 @@ public class MainController {
 
         }
     }
-    private static boolean authenticate (String userName, String password, Model model1){
+    private static boolean authenticate (String userName, String password){
+        Model model=ReadWriteToModel.readModel();
         boolean isAuthenticated = false;
-        for (Employee employee : model1.employees) {
+        for (Employee employee : model.employees) {
             if (employee.getUserName().equals(userName) && employee.getPassword().equals(password)) {
                 isAuthenticated = true;
             }
