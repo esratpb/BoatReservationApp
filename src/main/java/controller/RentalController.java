@@ -6,6 +6,7 @@ import model.*;
 
 import view.RentalMenuView;
 
+import javax.jws.WebParam;
 import java.io.File;
 import java.io.IOException;
 import java.text.*;
@@ -15,10 +16,8 @@ import java.util.*;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class RentalController {
-    static Model model = new Model();
-    static ObjectMapper mapper = new ObjectMapper();
+
     static Scanner scanner = new Scanner(System.in);
-    static Rental rental = new Rental();
 
     // check for existing id
     JsonNode rootNode = null;
@@ -50,6 +49,7 @@ public class RentalController {
     }
 
     private static void deleteRentals() {
+        Model model=ReadWriteToModel.readModel();
         System.out.println("Please enter the Id of the rental you want to delete:");
         int rentalId = scanner.nextInt();
 
@@ -62,15 +62,12 @@ public class RentalController {
 
         }
         // Java object to JSON file
-        try {
-            mapper.writeValue(new File("src/main/java/model/model.json"), model);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       ReadWriteToModel.writeModel(model);
 
     }
 
     private static void changeRentals() {
+        Model model=ReadWriteToModel.readModel();
         System.out.println("Please enter the id of the rental ");
         int rentalId = scanner.nextInt();
         System.out.println("Please enter discount rate %:");
@@ -90,21 +87,12 @@ public class RentalController {
                 System.out.println("The reservation with id: " + rentalId + " has been updated");
             }
         }
-        try {
-            mapper.writeValue(new File("src/main/java/model/model.json"), model);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ReadWriteToModel.writeModel(model);
     }
 
     public static void addRentals() throws ParseException {
-        List<Integer> bookedBoats = new ArrayList<>();
 
-        try {
-            model = mapper.readValue(new File("src/main/java/model/model.json"), Model.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Model model=ReadWriteToModel.readModel();
         System.out.println("Please select customer:");
         for (Customer customerIn : model.customers){
             System.out.println(customerIn);
@@ -175,19 +163,9 @@ public class RentalController {
         System.out.println("A new reservation is added successfully.");
 
 
-        try {
-            model = mapper.readValue(new File("src/main/java/model/model.json"), Model.class);
             model.rentals.add(rental);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            // Java object to JSON file
-            mapper.writeValue(new File("src/main/java/model/model.json"), model);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ReadWriteToModel.writeModel(model);
     }
 
     public static List<String> getBoatInfo(){
@@ -208,6 +186,7 @@ public class RentalController {
     }
 
     public static void showAvailableBoats(String enteredDate,String enterStartTime, String enterEndTime) {
+        Model model=ReadWriteToModel.readModel();
         Scanner scanner = new Scanner(System.in);
         ObjectMapper mapper = new ObjectMapper();
         List<Integer> bookedBoats = new ArrayList<>();
@@ -275,11 +254,7 @@ public class RentalController {
     }
 
     private static void showRentals() {
-        try {
-            model = mapper.readValue(new File("src/main/java/model/model.json"), Model.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       Model model=ReadWriteToModel.readModel();
         System.out.println("No\tDate\t \t Start Time\tEnd Time\tBoat Id\tBoat Type \t\t Duration \t Total Price\tCustomer Name\t Payment");
         for (Rental rental : model.rentals){
             String payment = "";
