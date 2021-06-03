@@ -106,21 +106,21 @@ public class RentalController {
         }
 
         scanner.nextLine();
-       String strDateFormat = "dd-MM-yyyy"; //Date format is Specified
-       SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
-       System.out.println("Enter rental date in the form dd-MM-YYYY");
-       String enteredDate = scanner.nextLine();
-       System.out.println("Enter rental start time in the form 14:30");
-       String enteredStartTime = scanner.nextLine();
-       System.out.println("Enter rental end time in the form 14:30");
-       String enteredEndTime = scanner.nextLine();
+//        String strDateFormat = "dd-MM-yyyy"; //Date format is Specified
+//        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
+//        System.out.println("Enter rental date in the form dd-MM-YYYY");
+//        String enteredDate = scanner.nextLine();
+//        System.out.println("Enter rental start time in the form 14:30");
+//        String enteredStartTime = scanner.nextLine();
+//        System.out.println("Enter rental end time in the form 14:30");
+//        String enteredEndTime = scanner.nextLine();
         Rental rental = null;
 
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-       Date date1 = format.parse(enteredStartTime);
-       Date date2 = format.parse(enteredEndTime);
-       double difference =  date2.getTime() - date1.getTime();
-       double rentDuration = difference / 3_600_000;
+//        Date date1 = format.parse(enteredStartTime);
+//        Date date2 = format.parse(enteredEndTime);
+//        double difference =  date2.getTime() - date1.getTime();
+//        double rentDuration = difference / 3_600_000;
         List<String> boatInfo = getBoatInfo();
         showAvailableBoats(boatInfo.get(0),boatInfo.get(1),boatInfo.get(2));
 
@@ -147,8 +147,8 @@ public class RentalController {
         try {
             String strDateFormat = "dd-MM-yyyy"; //Date format is Specified
             SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
-    public Rental(int rentalId, Date rentDate, Boat boat, Customer customer, String startTime,
-    String endTime, double rentDuration, boolean paymentIsDone) {
+//     public Rental(int rentalId, Date rentDate, Boat boat, Customer customer, String startTime,
+//     String endTime, double rentDuration, boolean paymentIsDone) {
             LocalTime startTime2 = LocalTime.parse(boatInfo.get(1));
             LocalTime endTime2 = LocalTime.parse(boatInfo.get(2));
             double rentDuration =  endTime2.getHour() - startTime2.getHour();
